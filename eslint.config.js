@@ -122,6 +122,35 @@ export default [
       ],
     },
   },
+  // TypeScript declaration files - relaxed rules
+  {
+    files: ['**/*.d.ts'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      parser: tsparser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        project: './tsconfig.json',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': tseslint,
+    },
+    rules: {
+      // Disable rules that don't make sense for type declarations
+      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      'no-unused-vars': 'off',
+      'no-console': 'off',
+      'max-len': 'off',
+
+      // Keep only essential rules for .d.ts files
+      'no-trailing-spaces': 'error',
+      'comma-dangle': ['error', 'always-multiline'],
+    },
+  },
   {
     ignores: ['dist/', 'node_modules/', '*.min.js', 'coverage/'],
   },
