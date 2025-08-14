@@ -59,9 +59,27 @@ export class GameState {
       const saved = localStorage.getItem('gospel-game-progress');
       if (saved) {
         const data = JSON.parse(saved);
-        this.currentChapter = data.currentChapter || 1;
-        this.playerProgress = data.playerProgress || this.playerProgress;
-        this.gameSettings = data.gameSettings || this.gameSettings;
+
+        // Handle missing properties gracefully
+        if (data.currentChapter !== undefined && data.currentChapter !== null) {
+          this.currentChapter = data.currentChapter;
+        }
+
+        if (data.playerProgress && data.playerProgress !== null) {
+          this.playerProgress = {
+            ...this.playerProgress,
+            ...data.playerProgress,
+            completedChapters: data.playerProgress.completedChapters || [],
+          };
+        }
+
+        if (data.gameSettings && data.gameSettings !== null) {
+          this.gameSettings = {
+            ...this.gameSettings,
+            ...data.gameSettings,
+          };
+        }
+
         console.log('📂 Game progress loaded');
         return true;
       }

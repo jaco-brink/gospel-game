@@ -1,13 +1,24 @@
 // Jest setup file for the Gospel Game
 
 // Mock browser APIs that might not be available in jsdom
+const localStorageMock = {
+  store: {} as Record<string, string>,
+  getItem: jest.fn((key: string) => {
+    return localStorageMock.store[key] || null;
+  }),
+  setItem: jest.fn((key: string, value: string) => {
+    localStorageMock.store[key] = value;
+  }),
+  removeItem: jest.fn((key: string) => {
+    delete localStorageMock.store[key];
+  }),
+  clear: jest.fn(() => {
+    localStorageMock.store = {};
+  }),
+};
+
 Object.defineProperty(window, 'localStorage', {
-  value: {
-    getItem: jest.fn(),
-    setItem: jest.fn(),
-    removeItem: jest.fn(),
-    clear: jest.fn(),
-  },
+  value: localStorageMock,
   writable: true,
 });
 
@@ -55,7 +66,7 @@ Object.defineProperty(window, 'performance', {
 });
 
 // Global test utilities
-global.testUtils = {
+(global as any).testUtils = {
   // Helper to create a mock game state
   createMockGameState: () => ({
     currentChapter: 1,
@@ -87,11 +98,4 @@ global.testUtils = {
   }),
 };
 
-// Extend global types for test utilities
-declare global {
-  var testUtils: {
-    createMockGameState: () => unknown;
-    waitFor: () => Promise<void>;
-    createMockEvent: () => unknown;
-  };
-}
+// Global types are declared in global.d.ts
