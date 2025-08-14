@@ -1,0 +1,76 @@
+{
+  "name": "gospel-game",
+  "version": "1.0.0",
+  "description": "A Christian educational game based on The Pilgrim's Progress, designed for young learners",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 3456",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src --ext .js,.ts",
+    "lint:fix": "eslint src --ext .js,.ts --fix",
+    "format": "prettier --write src/**/*.{js,ts,css,html}",
+    "format:check": "prettier --check src/**/*.{js,ts,css,html}",
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "tsc --noEmit --watch",
+    "build:types": "tsc --emitDeclarationOnly",
+    "prepare": "husky"
+  },
+  "keywords": [
+    "game",
+    "education",
+    "christian",
+    "pilgrims-progress",
+    "children",
+    "interactive"
+  ],
+  "author": "Gospel Game Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/gospel-game.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/gospel-game/issues"
+  },
+  "homepage": "https://github.com/your-username/gospel-game#readme",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css,html,json,md}": [
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
+    "@eslint/js": "^9.33.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.2.1",
+    "@typescript-eslint/eslint-plugin": "^8.39.1",
+    "@typescript-eslint/parser": "^8.39.1",
+    "@vitejs/plugin-legacy": "^7.2.1",
+    "babel-jest": "^30.0.5",
+    "eslint": "^9.33.0",
+    "eslint-plugin-import": "^2.32.0",
+    "globals": "^16.3.0",
+    "husky": "^9.1.7",
+    "jest": "^30.0.5",
+    "jest-environment-jsdom": "^30.0.5",
+    "lint-staged": "^16.1.5",
+    "prettier": "^3.6.2",
+    "ts-jest": "^29.4.1",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.2"
+  }
+}

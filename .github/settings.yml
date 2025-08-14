@@ -1,0 +1,134 @@
+# GitHub repository settings
+# This file configures branch protection, issue templates, and other repository settings
+
+repository:
+  # Repository name and description
+  name: gospel-game
+  description: "A Christian educational game based on The Pilgrim's Progress, designed for young learners"
+  homepage: "https://gospel-game.yourdomain.com"
+  topics: "game,education,christian,pilgrims-progress,children,interactive,typescript,javascript"
+  
+  # Repository features
+  has_issues: true
+  has_wiki: false
+  has_downloads: false
+  has_projects: true
+  has_discussions: true
+  
+  # Default branch
+  default_branch: main
+  
+  # Allow squash merging
+  allow_squash_merge: true
+  allow_merge_commit: false
+  allow_rebase_merge: true
+  allow_auto_merge: false
+  
+  # Delete head branches when PRs are merged
+  delete_branch_on_merge: true
+  
+  # Vulnerability alerts
+  vulnerability_alerts: true
+  
+  # Security and analysis
+  security_and_analysis:
+    secret_scanning:
+      status: enabled
+    secret_scanning_push_protection:
+      status: enabled
+    dependency_graph:
+      status: enabled
+    dependabot_security_updates:
+      status: enabled
+    dependabot_version_updates:
+      status: enabled
+
+# Branch protection rules
+branches:
+  - name: main
+    protection:
+      required_status_checks:
+        strict: true
+        contexts:
+          - "Code Quality"
+          - "Tests"
+          - "Security Audit"
+          - "Performance Check"
+          - "Browser Tests"
+          - "Documentation Check"
+      enforce_admins: true
+      required_pull_request_reviews:
+        required_approving_review_count: 1
+        dismiss_stale_reviews: true
+        require_code_owner_reviews: false
+      restrictions: null
+      required_linear_history: false
+      allow_force_pushes: false
+      allow_deletions: false
+      block_creations: false
+      required_conversation_resolution: true
+      
+  - name: develop
+    protection:
+      required_status_checks:
+        strict: true
+        contexts:
+          - "Code Quality"
+          - "Tests"
+          - "Security Audit"
+      enforce_admins: false
+      required_pull_request_reviews:
+        required_approving_review_count: 1
+        dismiss_stale_reviews: true
+        require_code_owner_reviews: false
+      restrictions: null
+      required_linear_history: false
+      allow_force_pushes: false
+      allow_deletions: false
+      block_creations: false
+      required_conversation_resolution: true
+
+# Issue labels
+labels:
+  - name: "bug"
+    color: "d73a4a"
+    description: "Something isn't working"
+  - name: "enhancement"
+    color: "a2eeef"
+    description: "New feature or request"
+  - name: "documentation"
+    color: "0075ca"
+    description: "Improvements or additions to documentation"
+  - name: "good first issue"
+    color: "7057ff"
+    description: "Good for newcomers"
+  - name: "help wanted"
+    color: "008672"
+    description: "Extra attention is needed"
+  - name: "priority: high"
+    color: "ff0000"
+    description: "High priority issue"
+  - name: "priority: medium"
+    color: "ffa500"
+    description: "Medium priority issue"
+  - name: "priority: low"
+    color: "00ff00"
+    description: "Low priority issue"
+  - name: "needs-triage"
+    color: "ffcc00"
+    description: "Issue needs to be triaged"
+  - name: "game-feature"
+    color: "1d76db"
+    description: "Game-specific feature"
+  - name: "educational"
+    color: "0e8a16"
+    description: "Educational content or feature"
+  - name: "accessibility"
+    color: "5319e7"
+    description: "Accessibility improvements"
+  - name: "performance"
+    color: "fbca04"
+    description: "Performance improvements"
+  - name: "security"
+    color: "d93f0b"
+    description: "Security-related issue" 

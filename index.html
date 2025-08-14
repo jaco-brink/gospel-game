@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A Christian educational game based on The Pilgrim's Progress, designed for young learners"
+    />
+    <meta
+      name="keywords"
+      content="game, education, christian, pilgrims-progress, children, interactive"
+    />
+    <meta name="author" content="Gospel Game Team" />
+
+    <title>Gospel Game - The Pilgrim's Progress</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+    <!-- Preload critical assets -->
+    <link
+      rel="preload"
+      href="/src/assets/fonts/main.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/src/styles/main.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div id="loading-screen">
+        <div class="loading-content">
+          <h1>Gospel Game</h1>
+          <p>The Pilgrim's Progress</p>
+          <div class="loading-spinner"></div>
+          <p>Loading...</p>
+        </div>
+      </div>
+
+      <div id="game-container" style="display: none">
+        <!-- Game content will be rendered here -->
+      </div>
+    </div>
+
+    <!-- Main game script -->
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
