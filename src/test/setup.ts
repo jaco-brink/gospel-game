@@ -1,18 +1,26 @@
 // Jest setup file for the Gospel Game
 
 // Mock browser APIs that might not be available in jsdom
-const localStorageMock = {
-  store: {} as Record<string, string>,
-  getItem: jest.fn((key: string) => {
+interface LocalStorageMock {
+  store: Record<string, string>;
+  getItem: jest.Mock<string | null, [string]>;
+  setItem: jest.Mock<void, [string, string]>;
+  removeItem: jest.Mock<void, [string]>;
+  clear: jest.Mock<void, []>;
+}
+
+const localStorageMock: LocalStorageMock = {
+  store: {},
+  getItem: jest.fn((key: string): string | null => {
     return localStorageMock.store[key] || null;
   }),
-  setItem: jest.fn((key: string, value: string) => {
+  setItem: jest.fn((key: string, value: string): void => {
     localStorageMock.store[key] = value;
   }),
-  removeItem: jest.fn((key: string) => {
+  removeItem: jest.fn((key: string): void => {
     delete localStorageMock.store[key];
   }),
-  clear: jest.fn(() => {
+  clear: jest.fn((): void => {
     localStorageMock.store = {};
   }),
 };
