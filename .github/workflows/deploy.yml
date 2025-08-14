@@ -33,14 +33,32 @@ jobs:
       - name: Build project
         run: npm run build
 
+      - name: Verify build output
+        run: |
+          echo "Verifying build output..."
+          if [ ! -f "dist/index.html" ]; then
+            echo "❌ dist/index.html not found"
+            exit 1
+          fi
+          if [ ! -d "dist/assets" ]; then
+            echo "❌ dist/assets directory not found"
+            exit 1
+          fi
+          echo "✅ Build output verified"
+          echo "📁 Files in dist/:"
+          ls -la dist/
+          echo "📁 Files in dist/assets/:"
+          ls -la dist/assets/
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         if: github.ref == 'refs/heads/main'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
-          # Optional: Replace with your domain
-          cname: gospel-game.yourdomain.com
+          force_orphan: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
 
       - name: Create deployment summary
         run: |
@@ -55,3 +73,16 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Deployment Time:** $(date -u)" >> $GITHUB_STEP_SUMMARY
+
+      - name: Verify deployment
+        run: |
+          echo "Waiting for deployment to be available..."
+          sleep 30
+          DEPLOY_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+          echo "Checking deployment at: $DEPLOY_URL"
+          if curl -s -f "$DEPLOY_URL" > /dev/null; then
+            echo "✅ Deployment verified successfully"
+          else
+            echo "⚠️  Deployment may still be processing (this is normal)"
+          fi
