@@ -23,13 +23,16 @@ This document describes the Continuous Integration and Continuous Deployment (CI
 │   Code Push     │───▶│   CI Pipeline   │───▶│   Deployment    │
 │   or PR         │    │                 │    │                 │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
-                              │
-                              ▼
-                       ┌─────────────────┐
-                       │ Quality Gates   │
+                              │                        ▲
+                              ▼                        │
+                       ┌─────────────────┐             │
+                       │ Quality Gates   │─────────────┘
                        │                 │
                        └─────────────────┘
 ```
+
+**For Pull Requests**: Only CI Pipeline runs
+**For Main Branch**: CI Pipeline → Quality Gates → Deployment Pipeline
 
 ### Key Features
 
@@ -54,12 +57,13 @@ This document describes the Continuous Integration and Continuous Deployment (CI
 - **Performance Check**: Bundle size analysis
 - **Browser Tests**: Basic compatibility testing
 - **Documentation Check**: Verifies documentation files
+- **Status Check**: Final validation and deployment trigger
 
 **Duration**: ~5-8 minutes
 
 ### 2. Deployment (`deploy.yml`)
 
-**Triggers**: Push to main branch, Manual dispatch
+**Triggers**: Successful CI pipeline completion on main branch, Manual dispatch
 
 **Jobs**:
 
@@ -69,6 +73,8 @@ This document describes the Continuous Integration and Continuous Deployment (CI
 - **Summary**: Creates deployment report
 
 **Duration**: ~3-5 minutes
+
+**Dependencies**: Requires successful CI pipeline completion
 
 ### 3. Dependency Management (`dependencies.yml`)
 
@@ -138,9 +144,9 @@ All pull requests must pass these checks before merging:
 ### Automatic Deployment
 
 1. **Trigger**: Push to main branch
-2. **Build**: Create production build
-3. **Test**: Run full test suite
-4. **Deploy**: Deploy to GitHub Pages
+2. **CI Pipeline**: Run all quality checks and tests
+3. **Validation**: Ensure all CI checks pass
+4. **Deploy**: Deploy to GitHub Pages (only if CI succeeds)
 5. **Verify**: Confirm deployment success
 
 ### Manual Deployment
@@ -214,6 +220,85 @@ All pull requests must pass these checks before merging:
 - **Security Issues**: Alert on vulnerability detection
 - **Performance Degradation**: Alert on performance issues
 - **Deployment Issues**: Alert on deployment failures
+
+## Workflow Dependency Chain
+
+### Pull Request Workflow
+
+**Triggers**: `pull_request` to `main` or `develop` branches
+
+**Workflows that run**:
+
+1. **CI Pipeline** (`ci.yml`) - **Runs immediately**
+   - All 6 jobs run in parallel: Quality, Tests, Security, Performance, Browser Tests, Documentation
+   - **Blocks PR merge** until all checks pass
+   - Required status checks (from branch protection):
+     - Code Quality
+     - Tests
+     - Security Audit
+     - Performance Check
+     - Browser Tests
+     - Documentation Check
+
+**Dependency Chain**:
+
+```
+Pull Request Created
+└── CI Pipeline (ci.yml)
+    ├── Quality ✅ (Required)
+    ├── Tests ✅ (Required)
+    ├── Security ✅ (Required)
+    ├── Performance ✅ (Required)
+    ├── Browser Tests ✅ (Required)
+    ├── Documentation ✅ (Required)
+    └── Status Check
+        ↓
+    PR can be merged (if approved)
+```
+
+**Note**: Deploy pipeline does NOT run on pull requests
+
+### Main Branch Workflow
+
+**Triggers**: `push` to `main` branch (direct commit or PR merge)
+
+**Workflows that run**:
+
+1. **CI Pipeline** (`ci.yml`) - **Runs immediately**
+   - Same 6 jobs as pull requests
+   - All jobs must pass for deployment to trigger
+
+2. **Deploy Pipeline** (`deploy.yml`) - **Runs only after CI succeeds**
+   - Build, test, deploy to GitHub Pages
+   - Creates deployment summary
+
+**Dependency Chain**:
+
+```
+Push to main
+└── CI Pipeline (ci.yml)
+    ├── Quality
+    ├── Tests
+    ├── Security
+    ├── Performance
+    ├── Browser Tests
+    ├── Documentation
+    └── Status Check
+        ↓ (if all pass)
+    Deploy Pipeline (deploy.yml)
+        ├── Build
+        ├── Test
+        └── Deploy to GitHub Pages
+        ↓
+    Live site updated
+```
+
+### Key Dependencies and Blocking Rules
+
+- **CI Pipeline**: No dependencies - runs independently
+- **Deploy Pipeline**: Requires successful CI pipeline completion
+- **Branch Protection**: All 6 CI checks must pass before merge
+- **Quality Gates**: Enforced through workflow dependencies
 
 ## Troubleshooting
 

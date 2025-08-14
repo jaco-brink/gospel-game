@@ -11,13 +11,14 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "lint": "eslint src --ext .js,.ts",
-    "lint:fix": "eslint src --ext .js,.ts --fix",
+    "lint": "eslint src --ext .js,.ts && yamllint .github/",
+    "lint:fix": "eslint src --ext .js,.ts --fix && yamllint .github/",
     "format": "prettier --write src/**/*.{js,ts,css,html}",
     "format:check": "prettier --check src/**/*.{js,ts,css,html}",
     "type-check": "tsc --noEmit",
     "type-check:watch": "tsc --noEmit --watch",
     "build:types": "tsc --emitDeclarationOnly",
+    "lint:yaml": "yamllint .github/",
     "prepare": "husky"
   },
   "keywords": [
@@ -49,6 +50,9 @@
     ],
     "*.{css,html,json,md}": [
       "prettier --write"
+    ],
+    "*.{yml,yaml}": [
+      "yamllint"
     ]
   },
   "devDependencies": {

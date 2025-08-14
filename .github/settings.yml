@@ -7,29 +7,29 @@ repository:
   description: "A Christian educational game based on The Pilgrim's Progress, designed for young learners"
   homepage: "https://gospel-game.yourdomain.com"
   topics: "game,education,christian,pilgrims-progress,children,interactive,typescript,javascript"
-  
+
   # Repository features
   has_issues: true
   has_wiki: false
   has_downloads: false
   has_projects: true
   has_discussions: true
-  
+
   # Default branch
   default_branch: main
-  
+
   # Allow squash merging
   allow_squash_merge: true
   allow_merge_commit: false
   allow_rebase_merge: true
   allow_auto_merge: false
-  
+
   # Delete head branches when PRs are merged
   delete_branch_on_merge: true
-  
+
   # Vulnerability alerts
   vulnerability_alerts: true
-  
+
   # Security and analysis
   security_and_analysis:
     secret_scanning:
@@ -67,7 +67,7 @@ branches:
       allow_deletions: false
       block_creations: false
       required_conversation_resolution: true
-      
+
   - name: develop
     protection:
       required_status_checks:
@@ -131,4 +131,4 @@ labels:
     description: "Performance improvements"
   - name: "security"
     color: "d93f0b"
-    description: "Security-related issue" 
+    description: "Security-related issue"

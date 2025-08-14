@@ -90,4 +90,4 @@ updates:
       - "automated"
     # Only create PRs for security updates
     update-types:
-      - "security" 
+      - "security"
